@@ -1,0 +1,127 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: API docs of project Contacts
+  version: "1.0.0"
+  title: Contacts
+  contact:
+    email: burkov4r@yandex.ru
+paths:
+  /api/employees/{number}:
+    get:
+      summary: returns list of all contacts
+      operationId: returns list of all contacts
+      description: |                     
+          returns list of all contacts
+      parameters:
+        - name: number
+          in: path
+          required: true
+          description: "Number of contact"
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: returns list of all contacts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact_info'
+  /api/change_info/{emp_id}:
+    get:
+      summary: returns info about contact
+      operationId: returns info about contact
+      description: |
+        returns info about contact
+      parameters:
+        - name: emp_id
+          in: path
+          required: true
+          description: "Number of contact"
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: returns info about contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact_info'
+    put:
+      summary: change info about contact
+      operationId: change info about contact
+      description: |
+        change info about contact
+      parameters:
+        - name: emp_id
+          in: path
+          required: true
+          description: "Number of contact"
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        description: Update an existent contact in the db
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Contact_form'
+      responses:
+        '200':
+          description: returns new info about contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact_info'
+components:
+  schemas:
+    Contact_info:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Иван Иванов'
+        department:
+          type: string
+          example: Бухгалтерия
+        company:
+          type: string
+          example: 'ИП Петров Пётр Петрович'
+        jobTitle:
+          type: string
+          example: Главбух
+        profile_picture:
+          type: string
+          format: url
+          example: 'http://127.0.0.1:8000/media/photo/default/default.jpg'
+    Contact_form:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Иван Иванов
+          required: true
+        company:
+          type: string
+          example: ООО Энерго
+          required: true
+        department:
+          type: string
+          example: Администрация
+          required: true
+        jobTitle:
+          type: string
+          example: Директор
+          required: true
+        profile_picture:
+          type: file
+          format: binary
+          required: false
+
